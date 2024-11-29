@@ -1,7 +1,8 @@
 @echo off
 for /R %%f in (*.qc) do (
-    setlocal enableDelayedExpansion    
+    setlocal disableDelayedExpansion    
     set "src=%%f"
+    echo Converting: %%f
     setlocal enableDelayedExpansion
     set "out=!src:lqsrc=out!"
     set "out=!out:.qc=.lua!"
