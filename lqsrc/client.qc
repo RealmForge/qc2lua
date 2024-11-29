@@ -174,16 +174,7 @@ void() GotoNextMap =
 	}
 	else
 	{
-
-#ifdef __QW__ // NQ does not support infokeys
-		newmap = infokey(world, mapname);
-		if (newmap != "")
-			changelevel (newmap);
-		else
-			changelevel (nextmap);
-#else
-			changelevel (nextmap);
-#endif
+		changelevel (nextmap);
 	}
 };
 
@@ -197,16 +188,12 @@ var struct
 } intermission_levels[] =
 {
 
-#ifdef __LIBREQUAKE__
-
-	{"maps/e0m7.bsp", 2, LOC_EPILOGUE_0, __NULL__},
-
-#endif // __LIBREQUAKE__
+	{"maps/e0m7.bsp", 2, LOC_EPILOGUE_0, SUB_Null},
 
 	{"maps/e1m7.bsp", 2, LOC_EPILOGUE_1, LOC_EPILOGUE_1_FREEWARE},
-	{"maps/e2m6.bsp", 2, LOC_EPILOGUE_2, __NULL__},
-	{"maps/e3m6.bsp", 2, LOC_EPILOGUE_3, __NULL__},
-	{"maps/e4m7.bsp", 2, LOC_EPILOGUE_4, __NULL__}
+	{"maps/e2m6.bsp", 2, LOC_EPILOGUE_2, SUB_Null},
+	{"maps/e3m6.bsp", 2, LOC_EPILOGUE_3, SUB_Null},
+	{"maps/e4m7.bsp", 2, LOC_EPILOGUE_4, SUB_Null}
 };
 // --cypress
 
@@ -238,7 +225,7 @@ void() ExitIntermission =
 
 				WriteByte(MSG_ALL, SVC_FINALE);
 
-				if (!cvar("registered") && intermission_levels[i].freeware_text != __NULL__)
+				if (!cvar("registered") && intermission_levels[i].freeware_text != SUB_Null)
 				{
 					WriteString(MSG_ALL, intermission_levels[i].freeware_text);
 				}
@@ -323,23 +310,10 @@ void() execute_changelevel =
 		other = find (other, classname, "player");
 	}
 
-#ifdef __QW__ // Differences in engine protocols
-	WriteByte (MSG_ALL, SVC_CDTRACK);
-	WriteByte (MSG_ALL, 3);
-
-	WriteByte (MSG_ALL, SVC_INTERMISSION);
-	WriteCoord (MSG_ALL, pos.origin_x);
-	WriteCoord (MSG_ALL, pos.origin_y);
-	WriteCoord (MSG_ALL, pos.origin_z);
-	WriteAngle (MSG_ALL, pos.mangle_x);
-	WriteAngle (MSG_ALL, pos.mangle_y);
-	WriteAngle (MSG_ALL, pos.mangle_z);
-#else
 	WriteByte (MSG_ALL, SVC_CDTRACK);
 	WriteByte (MSG_ALL, 3);
 	WriteByte (MSG_ALL, 3);
 	WriteByte (MSG_ALL, SVC_INTERMISSION);
-#endif
 };
 
 
@@ -348,19 +322,11 @@ void() changelevel_touch =
 	if (other.classname != "player")
 		return;
 
-#ifdef __QW__ // noexit cvar is not supported in QW
-	if ((cvar("samelevel") == 2) || ((cvar("samelevel") == 3) && (mapname != "start")))
-	{
-		T_Damage (other, self, self, 50000);
-		return;
-	}
-#else
 	if ((cvar("noexit") == 1) || ((cvar("noexit") == 2) && (mapname != "start")))
 	{
 		T_Damage (other, self, self, 50000);
 		return;
 	}
-#endif
 
 	if (deathmatch || coop)
 	{
@@ -380,7 +346,7 @@ void() changelevel_touch =
 		return;
 	}
 
-	self.touch = __NULL__;
+	self.touch = SUB_Null;
 
 	// we can't move people right now, because touch functions are called
 	// in the middle of C movement code, so set a think time to do it
@@ -648,10 +614,6 @@ void() PutClientInServer =
 	spawn_tdeath (self.origin, self);
 
 	stuffcmd(self, "-attack\n");            // Supa, prevent shooting after respawning in MP
-
-#ifdef __QW__ // NQ does not support infokeys
-	axes_only = stof(infokey(world, "axe"));
-#endif
 
 	// Deathmatch 4 starting items
 	if (deathmatch_supermode())
@@ -1281,16 +1243,10 @@ void() CheckPowerups =
 		if (self.invincible_finished > time)
 		{
 			self.effects = self.effects | EF_DIMLIGHT;
-#ifdef __QW__ // EF_RED is not supported in NQ
-			self.effects = self.effects | EF_RED;
-#endif
 		}
 		else
 		{
 			self.effects = self.effects - (self.effects & EF_DIMLIGHT);
-#ifdef __QW__ // EF_RED is not supported in NQ
-			self.effects = self.effects - (self.effects & EF_RED);
-#endif
 		}
 	}
 
@@ -1336,17 +1292,11 @@ void() CheckPowerups =
 		if (self.super_damage_finished > time)
 		{
 			self.effects = self.effects | EF_DIMLIGHT;
-#ifdef __QW__ // EF_BLUE is not supported in NQ
-			self.effects = self.effects | EF_BLUE;
-#endif
 		}
 
 		else
 		{
 			self.effects = self.effects - (self.effects & EF_DIMLIGHT);
-#ifdef __QW__ // EF_BLUE is not supported in NQ
-			self.effects = self.effects - (self.effects & EF_BLUE);
-#endif
 		}
 	}
 
@@ -1417,12 +1367,8 @@ void() PlayerPostThink =
 		self.jump_flag = 0;
 	}
 
-#ifdef __QW__ // Honestly not sure why this branch is necessary. Possibly related to movement physics differences.
-	self.jump_flag = self.velocity_z;
-#else
 	if (!(self.flags & FL_ONGROUND))
 		self.jump_flag = self.velocity_z;
-#endif
 
 	CheckPowerups ();
 
@@ -1484,22 +1430,12 @@ void(entity targ, entity attacker) ClientObituary =
 
 	local	float	on_team;
 
-#ifdef __QW__ // QW handles teams differently
-	local	string	attackerteam, targteam;
-#else
 	local	float	attackerteam, targteam;
-#endif
 
-#ifdef __QW__ // QW handles teams differently
-	attackerteam = infokey(attacker, "team");
-	targteam = infokey(targ, "team");
-	on_team = attackerteam != "";
-#else
 	// gb
 	attackerteam = attacker.team;
 	targteam = targ.team;
 	on_team = attackerteam != 0;
-#endif
 
 	deathstring = deathstring2 = string_null;
 
@@ -1549,18 +1485,10 @@ void(entity targ, entity attacker) ClientObituary =
 			if (attacker.dmg == 666000) {
 				bprint(PRINT_MEDIUM, targ.netname);
 
-#ifdef __LIBREQUAKE__
-
 				if (random() < 0.01)
 					bprint(PRINT_MEDIUM, LOC_DEATH_FALL2);
 				else
 					bprint(PRINT_MEDIUM, LOC_DEATH_FALL1);
-
-#else
-
-				bprint(PRINT_MEDIUM, LOC_DEATH_FALL);
-
-#endif // __LIBREQUAKE__
 
 				bprint(PRINT_MEDIUM, "\n");
 				return;
@@ -1569,18 +1497,10 @@ void(entity targ, entity attacker) ClientObituary =
 			if (attacker.dmg == 666001) {
 				bprint(PRINT_MEDIUM, targ.netname);
 
-#ifdef __LIBREQUAKE__
-
 				if (random() < 0.01)
 					bprint(PRINT_MEDIUM, LOC_DEATH_SPACE2);
 				else
 					bprint(PRINT_MEDIUM, LOC_DEATH_SPACE1);
-
-#else
-
-				bprint(PRINT_MEDIUM, LOC_DEATH_FALL);
-
-#endif // __LIBREQUAKE__
 
 				bprint(PRINT_MEDIUM, "\n");
 				return;
@@ -1589,18 +1509,10 @@ void(entity targ, entity attacker) ClientObituary =
 			if (attacker.dmg == 666002) {
 				bprint(PRINT_MEDIUM, targ.netname);
 
-#ifdef __LIBREQUAKE__
-
 				if (random() < 0.01)
 					bprint(PRINT_MEDIUM, LOC_DEATH_VOID2);
 				else
 					bprint(PRINT_MEDIUM, LOC_DEATH_VOID1);
-
-#else
-
-				bprint(PRINT_MEDIUM, LOC_DEATH_FALL);
-
-#endif // __LIBREQUAKE__
 
 				bprint(PRINT_MEDIUM, "\n");
 				return;
@@ -1713,7 +1625,6 @@ void(entity targ, entity attacker) ClientObituary =
 					deathstring = LOC_DEATH_AXE_1A;
 					deathstring2 = LOC_DEATH_AXE_1B;
 
-#ifdef __LIBREQUAKE__
 					if (attacker.super_damage_finished > 0) {
 						deathstring = LOC_DEATH_AXE_QA;
 						deathstring2 = LOC_DEATH_AXE_QB;
@@ -1722,7 +1633,6 @@ void(entity targ, entity attacker) ClientObituary =
 						deathstring = LOC_DEATH_AXE_2A;
 						deathstring2 = LOC_DEATH_AXE_2B;
 					}
-#endif
 				}
 
 				// Shotgun
@@ -1731,7 +1641,6 @@ void(entity targ, entity attacker) ClientObituary =
 					deathstring = LOC_DEATH_SHOTGUN_1A;
 					deathstring2 = LOC_DEATH_SHOTGUN_1B;
 
-#ifdef __LIBREQUAKE__
 					if (attacker.super_damage_finished > 0) {
 						deathstring = LOC_DEATH_SHOTGUN_QA;
 						deathstring2 = LOC_DEATH_SHOTGUN_QB;
@@ -1740,7 +1649,6 @@ void(entity targ, entity attacker) ClientObituary =
 						deathstring = LOC_DEATH_SHOTGUN_2A;
 						deathstring2 = LOC_DEATH_SHOTGUN_2B;
 					}
-#endif
 				}
 
 				// Super Shotgun
@@ -1749,7 +1657,6 @@ void(entity targ, entity attacker) ClientObituary =
 					deathstring = LOC_DEATH_SUPER_SHOTGUN_1A;
 					deathstring2 = LOC_DEATH_SUPER_SHOTGUN_1B;
 
-#ifdef __LIBREQUAKE__
 					if (attacker.super_damage_finished > 0) {
 						deathstring = LOC_DEATH_SUPER_SHOTGUN_QA;
 						deathstring2 = LOC_DEATH_SUPER_SHOTGUN_QB;
@@ -1758,7 +1665,6 @@ void(entity targ, entity attacker) ClientObituary =
 						deathstring = LOC_DEATH_SUPER_SHOTGUN_2A;
 						deathstring2 = LOC_DEATH_SUPER_SHOTGUN_2B;
 					}
-#endif
 				}
 
 				// Nailgun
@@ -1767,7 +1673,6 @@ void(entity targ, entity attacker) ClientObituary =
 					deathstring = LOC_DEATH_NAILGUN_1A;
 					deathstring2 = LOC_DEATH_NAILGUN_1B;
 
-#ifdef __LIBREQUAKE__
 					if (attacker.super_damage_finished > 0) {
 						deathstring = LOC_DEATH_NAILGUN_QA;
 						deathstring2 = LOC_DEATH_NAILGUN_QB;
@@ -1776,7 +1681,6 @@ void(entity targ, entity attacker) ClientObituary =
 						deathstring = LOC_DEATH_NAILGUN_2A;
 						deathstring2 = LOC_DEATH_NAILGUN_2B;
 					}
-#endif
 				}
 
 				// Super Nailgun
@@ -1785,7 +1689,6 @@ void(entity targ, entity attacker) ClientObituary =
 					deathstring = LOC_DEATH_SUPER_NAILGUN_1A;
 					deathstring2 = LOC_DEATH_SUPER_NAILGUN_1B;
 
-#ifdef __LIBREQUAKE__
 					if (attacker.super_damage_finished > 0) {
 						deathstring = LOC_DEATH_SUPER_NAILGUN_QA;
 						deathstring2 = LOC_DEATH_SUPER_NAILGUN_QB;
@@ -1794,7 +1697,6 @@ void(entity targ, entity attacker) ClientObituary =
 						deathstring = LOC_DEATH_SUPER_NAILGUN_2A;
 						deathstring2 = LOC_DEATH_SUPER_NAILGUN_2B;
 					}
-#endif
 				}
 
 				// Grenade Launcher
@@ -1803,7 +1705,6 @@ void(entity targ, entity attacker) ClientObituary =
 					deathstring = LOC_DEATH_GRENADE_LAUNCHER_1A;
 					deathstring2 = LOC_DEATH_GRENADE_LAUNCHER_1B;
 
-#ifdef __LIBREQUAKE__
 					if (attacker.super_damage_finished > 0) {
 						deathstring = LOC_DEATH_GRENADE_LAUNCHER_QA;
 						deathstring2 = LOC_DEATH_GRENADE_LAUNCHER_QB;
@@ -1816,12 +1717,6 @@ void(entity targ, entity attacker) ClientObituary =
 						deathstring = LOC_DEATH_GRENADE_LAUNCHER_2A;
 						deathstring2 = LOC_DEATH_GRENADE_LAUNCHER_2B;
 					}
-#else
-					if (targ.health < -40) {
-						deathstring = LOC_DEATH_GRENADE_LAUNCHER_GA;
-						deathstring2 = LOC_DEATH_GRENADE_LAUNCHER_GB;
-					}
-#endif
 				}
 
 				// Rocket Launcher
@@ -1830,7 +1725,6 @@ void(entity targ, entity attacker) ClientObituary =
 					deathstring = LOC_DEATH_ROCKET_LAUNCHER_1A;
 					deathstring2 = LOC_DEATH_ROCKET_LAUNCHER_1B;
 
-#ifdef __LIBREQUAKE__
 					if (attacker.super_damage_finished > 0) {
 						deathstring = LOC_DEATH_ROCKET_LAUNCHER_Q1A;
 						deathstring2 = LOC_DEATH_ROCKET_LAUNCHER_Q1B;
@@ -1843,35 +1737,6 @@ void(entity targ, entity attacker) ClientObituary =
 						deathstring = LOC_DEATH_ROCKET_LAUNCHER_2A;
 						deathstring2 = LOC_DEATH_ROCKET_LAUNCHER_2B;
 					}
-#else
-					if (targ.health < -40) {
-						if (attacker.super_damage_finished > 0) {
-							rnum = random();
-							if (rnum < 0.3) {
-								deathstring = LOC_DEATH_ROCKET_LAUNCHER_Q1A;
-								deathstring2 = LOC_DEATH_ROCKET_LAUNCHER_Q1B;
-							}
-							else if (rnum < 0.6) {
-								deathstring = LOC_DEATH_ROCKET_LAUNCHER_Q2A;
-								deathstring2 = LOC_DEATH_ROCKET_LAUNCHER_Q2B;
-							}
-							else {
-								// This one flips the order of attacker and target
-								bprint (PRINT_MEDIUM, attacker.netname);
-								bprint (PRINT_MEDIUM, LOC_DEATH_ROCKET_LAUNCHER_Q3A);
-								bprint (PRINT_MEDIUM, targ.netname);
-								bprint (PRINT_MEDIUM, LOC_DEATH_ROCKET_LAUNCHER_Q3B);
-								bprint (PRINT_MEDIUM, "\n");
-								return;
-							}
-						}
-						else 
-						{
-							deathstring = LOC_DEATH_ROCKET_LAUNCHER_GA;
-							deathstring2 = LOC_DEATH_ROCKET_LAUNCHER_GB;
-						}
-					}
-#endif
 				}
 
 				// Lightning Gun
@@ -1879,7 +1744,6 @@ void(entity targ, entity attacker) ClientObituary =
 					deathstring = LOC_DEATH_LIGHTNING_1A;
 					deathstring2 = LOC_DEATH_LIGHTNING_1B;
 
-#ifdef __LIBREQUAKE__
 					if (attacker.super_damage_finished > 0) {
 						deathstring = LOC_DEATH_LIGHTNING_QA;
 						deathstring2 = LOC_DEATH_LIGHTNING_QB;
@@ -1888,7 +1752,6 @@ void(entity targ, entity attacker) ClientObituary =
 						deathstring = LOC_DEATH_LIGHTNING_2A;
 						deathstring2 = LOC_DEATH_LIGHTNING_2B;
 					}
-#endif
 				}
 
 				// Lightning Gun Discharge
@@ -1928,18 +1791,10 @@ void(entity targ, entity attacker) ClientObituary =
 			{
 				targ.deathtype = string_null;
 				
-#ifdef __LIBREQUAKE__
-
 				if (random() < 0.01)
 					bprint(PRINT_MEDIUM, LOC_DEATH_FALL2);
 				else
 					bprint(PRINT_MEDIUM, LOC_DEATH_FALL1);
-
-#else
-
-				bprint(PRINT_MEDIUM, LOC_DEATH_FALL);
-
-#endif // __LIBREQUAKE__
 
 				bprint(PRINT_MEDIUM, "\n");
 				return;

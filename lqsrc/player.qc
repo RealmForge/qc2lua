@@ -168,13 +168,7 @@ void()	player_run =[	$rockrun1,	player_run	]
 
 void() muzzleflash =
 {
-#ifdef __QW__ // Differences in engine protocols
-	WriteByte (MSG_MULTICAST, SVC_MUZZLEFLASH);
-	WriteEntity (MSG_MULTICAST, self);
-	multicast (self.origin, MULTICAST_PVS);
-#else
 	self.effects = self.effects | EF_MUZZLEFLASH;
-#endif
 };
 
 void()  player_shot1 =  [$shotatt1, player_shot2	] {self.weaponframe=1;muzzleflash();};

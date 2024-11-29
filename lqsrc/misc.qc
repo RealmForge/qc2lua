@@ -256,21 +256,11 @@ void() barrel_explode =
 	self.takedamage = DAMAGE_NO;
 	self.classname = "explo_box";
 	T_RadiusDamage (self, self, 160, world, "");
-#ifdef __QW__ // Differences in engine protocols
-	WriteByte (MSG_MULTICAST, SVC_TEMPENTITY);
-	WriteByte (MSG_MULTICAST, TE_EXPLOSION);
-	WriteCoord (MSG_MULTICAST, self.origin_x);
-	WriteCoord (MSG_MULTICAST, self.origin_y);
-	WriteCoord (MSG_MULTICAST, self.origin_z+32);
-	multicast (self.origin, MULTICAST_PHS);
-	remove (self); 
-#else
 	sound (self, CHAN_VOICE, "weapons/r_exp3.wav", 1, ATTN_NORM);
 	particle (self.origin, '0 0 0', 75, 255);
 
 	self.origin_z = self.origin_z + 32;
 	BecomeExplosion ();
-#endif
 };
 
 /*QUAKED misc_explobox (0 .5 .8) (0 0 0) (32 32 64)
@@ -375,21 +365,11 @@ void() Laser_Touch =
 	}
 	else
 	{
-#ifdef __QW__ // Differences in engine protocols
-		WriteByte (MSG_MULTICAST, SVC_TEMPENTITY);
-		WriteByte (MSG_MULTICAST, TE_GUNSHOT);
-		WriteByte (MSG_MULTICAST, 5);
-		WriteCoord (MSG_MULTICAST, org_x);
-		WriteCoord (MSG_MULTICAST, org_y);
-		WriteCoord (MSG_MULTICAST, org_z);
-		multicast (org, MULTICAST_PVS);
-#else
 		WriteByte (MSG_BROADCAST, SVC_TEMPENTITY);
 		WriteByte (MSG_BROADCAST, TE_GUNSHOT);
 		WriteCoord (MSG_BROADCAST, org_x);
 		WriteCoord (MSG_BROADCAST, org_y);
 		WriteCoord (MSG_BROADCAST, org_z);
-#endif
 	}
 	
 	remove(self);	

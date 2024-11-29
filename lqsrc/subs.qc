@@ -317,7 +317,7 @@ void() SUB_UseTargets =
 			self = t;
 			other = stemp;
 
-			if (self.use != __NULL__)
+			if (self.use != SUB_Null)
 				self.use ();
 
 			self = stemp;

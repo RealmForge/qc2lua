@@ -112,10 +112,6 @@ void(float timeleft) DropQuad =
 	item.touch = q_touch;
 	item.nextthink = time + timeleft;    // remove it with the time left on it
 	item.think = SUB_Remove;
-
-#ifdef __QW__ // EF_BLUE is not supported in NQ
-	item.effects = EF_BLUE;
-#endif
 };
 
 
@@ -1363,8 +1359,6 @@ void() sigil_touch =
 	if (other.health <= 0)
 		return;
 
-#ifdef __LIBREQUAKE__
-
 	string msg;
 
 	// Announce collection of rune
@@ -1385,12 +1379,6 @@ void() sigil_touch =
 		bprint (PRINT_HIGH, "\n");
 		centerprint2 (other, LOC_RUNE_LQ_YOU, msg);
 	} 
-
-#else
-
-	centerprint(other, LOC_RUNE_GET);
-
-#endif // __LIBREQUAKE__
 
 	sound (other, CHAN_ITEM, self.noise, 1, ATTN_NORM);
 	stuffcmd (other, "bf\n");
@@ -1545,10 +1533,6 @@ void() item_artifact_invulnerability =
 	setmodel (self, "progs/invulner.mdl");
 	self.netname = LOC_ITEM_NAME_PENTPROT;
 
-#ifdef __QW__ // EF_RED is not supported in NQ
-	self.effects = self.effects | EF_RED;
-#endif
-
 	self.items = IT_INVULNERABILITY;
 	setsize (self, '-16 -16 -24', '16 16 32');
 	StartItem ();
@@ -1624,10 +1608,6 @@ void() item_artifact_super_damage =
 		self.netname = LOC_ITEM_NAME_OCTDMG;
 	else
 		self.netname = LOC_ITEM_NAME_QUADDMG;
-
-#ifdef __QW__ // EF_BLUE is not supported in NQ
-	self.effects = self.effects | EF_BLUE;
-#endif
 
 	self.items = IT_QUAD;
 	setsize (self, '-16 -16 -24', '16 16 32');

@@ -1,0 +1,17 @@
+{
+    "configurations": [
+      {
+        "type": "lua-local",
+        "request": "launch",
+        "name": "Debug",
+        "program": {
+          "lua": "lua53",
+          "file": "run.lua"
+        },
+        "cwd": "${workspaceFolder}",
+        "args": [
+            "C:/Dev/qc2lua/lqsrc/lq1/cutscene_camera.qc"
+          ]
+      }
+    ]
+  }

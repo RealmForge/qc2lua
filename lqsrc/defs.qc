@@ -31,29 +31,9 @@ entity		other;
 entity		world;
 float		time;
 float		frametime;
-
-#ifdef __QW__ // NQ defines this outside of C-referenced vars
-entity		newmis;				// if this is set, the entity that just
-								// run created a new missile that should
-								// be simulated immediately
-#endif
-
-float		force_retouch;		// force all entities to touch triggers
-								// next frame.  this is needed because
-								// non-moving things don't normally scan
-								// for triggers, and when a trigger is
-								// created (like a teleport trigger), it
-								// needs to catch everything.
-								// decremented each frame, so set to 2
-								// to guarantee everything is touched
-string		mapname;
-
-#ifndef __QW__ // QW defines these outside of C-referenced vars
 float		deathmatch;
 float		coop;
 float		teamplay;
-#endif
-
 float		serverflags;		// propagated from level to level, used to
 								// keep track of completed episodes
 
@@ -129,10 +109,6 @@ void		end_sys_globals;		// flag for structure dumping
 
 .float		ltime;			// local time for entity
 
-#ifdef __QW__ // Unused, as far as I can tell, but needed to keep the C struct intact
-.float		lastruntime;
-#endif
-
 .float		movetype;
 .float		solid;
 
@@ -142,9 +118,7 @@ void		end_sys_globals;		// flag for structure dumping
 .vector		angles;
 .vector		avelocity;
 
-#ifndef __QW__ // Differences in engine protocols
 .vector		punchangle;		// temp angle adjust from damage or recoil
-#endif
 
 .string		classname;		// spawn function
 .string		model;
@@ -372,14 +346,7 @@ void		end_sys_fields;			// flag for structure dumping
 #define SVC_FINALE			31
 #define SVC_CDTRACK			32
 #define SVC_SELLSCREEN		33
-#ifdef __QW__ // Differences in engine protocols
-#define SVC_SMALLKICK		34
-#define SVC_BIGKICK			35
-#define SVC_MUZZLEFLASH		39
-#else
 #define SVC_CUTSCENE		34
-#endif
-
 
 #define TE_SPIKE			0
 #define TE_SUPERSPIKE		1
@@ -393,10 +360,6 @@ void		end_sys_fields;			// flag for structure dumping
 #define TE_LIGHTNING3		9
 #define TE_LAVASPLASH		10
 #define TE_TELEPORT			11
-#ifdef __QW__ // Differences in engine protocols
-#define TE_BLOOD			12
-#define TE_LIGHTNINGBLOOD	13
-#endif
 
 // sound channels
 // channel 0 never willingly overrides
@@ -406,11 +369,7 @@ void		end_sys_fields;			// flag for structure dumping
 #define CHAN_VOICE			2
 #define CHAN_ITEM			3
 #define CHAN_BODY			4
-#ifdef __QW__ // NetQuake doesn't support CHAN_NO_PHS_ADD. Set it to 0 so it will have no effect when combined with another channel.
-#define CHAN_NO_PHS_ADD 	8
-#else
 #define CHAN_NO_PHS_ADD 	0
-#endif
 
 #define ATTN_NONE			0
 #define ATTN_NORM			1
@@ -426,19 +385,10 @@ void		end_sys_fields;			// flag for structure dumping
 
 // entity effects
 
-#ifdef __QW__ // Engines support different entity effects
-#define EF_BRIGHTLIGHT 		4
-#define EF_DIMLIGHT 		8
-#define EF_FLAG1			16
-#define EF_FLAG2			32
-#define EF_BLUE				64	// Blue Globe effect for Quad
-#define EF_RED				128
-#else
 #define EF_BRIGHTFIELD		1
 #define EF_MUZZLEFLASH 		2
 #define EF_BRIGHTLIGHT 		4
 #define EF_DIMLIGHT 		8
-#endif
 
 // messages
 #define MSG_BROADCAST		0		// unreliable to all
@@ -446,26 +396,11 @@ void		end_sys_fields;			// flag for structure dumping
 #define MSG_ALL				2		// reliable to all
 #define MSG_INIT			3		// write to the init string
 
-#ifdef __QW__ // Multicast is QW only
-#define MSG_MULTICAST		4		// for multicast() call
-#endif
-
-
 // message levels
 #define PRINT_LOW			0            // pickup messages
 #define PRINT_MEDIUM		1            // death messages
 #define PRINT_HIGH			2            // critical messages
 #define PRINT_CHAT			3            // also goes to chat console
-
-#ifdef __QW__ // Multicast is QW only
-// multicast sets
-#define MULTICAST_ALL		0            // every client
-#define MULTICAST_PHS		1            // within hearing
-#define MULTICAST_PVS		2            // within sight
-#define MULTICAST_ALL_R		3            // every client, reliable
-#define MULTICAST_PHS_R		4            // within hearing, reliable
-#define MULTICAST_PVS_R		5            // within sight, reliable
-#endif
 
 #define AS_STRAIGHT			1
 #define AS_SLIDING			2
@@ -477,16 +412,12 @@ void		end_sys_fields;			// flag for structure dumping
 //
 // globals
 //
-#ifndef __QW__ // Used for monster code; not needed in QW
 float	movedist;
-#endif
 float	gameover;		// set when a rule exits
 
 string	string_null;	// null string, nothing should be held here
 
-#ifndef __QW__ // QW defines this inside of C-referenced vars
 entity	newmis;			// launch_spike sets this after spawning it
-#endif
 
 entity	activator;		// the entity that activated a trigger or brush
 
@@ -500,11 +431,6 @@ float	framecount;
 float		skill;
 float		timelimit;
 float		fraglimit;
-#ifdef __QW__ // NQ defines this inside of C-referenced vars
-float		deathmatch;
-float		coop;
-float		teamplay;
-#endif
 
 //================================================
 
@@ -692,16 +618,6 @@ string(string s) precache_model		= #20;
 void(entity client, string s)stuffcmd = #21;
 entity(vector org, float rad) findradius = #22;
 
-#ifdef __QW__ // QW supports print levels for console prints. NQ doesn't, so we just have it ignore the print level.
-void(float level, string s) bprint					= #23;
-void(entity client, float level, string s) sprint	= #24;
-#else
-void(string s) bprint_e								= #23;
-void(entity client, string s) sprint_e				= #24;
-void(float level, string s) bprint = { bprint_e(s); };
-void(entity client, float level, string s) sprint = { sprint_e(client, s); };
-#endif
-
 void(string s) dprint				= #25;
 string(float f) ftos				= #26;
 string(vector v) vtos				= #27;
@@ -784,21 +700,8 @@ void(entity e) setspawnparms		= #78;		// set parm1... to the
 												// values at level start
 												// for coop respawn
 
-#ifdef __QW__ // logfrag is supported in QW, but not NQ. We just have NQ define it as an empty function.
-void(entity killer, entity killee) logfrag = #79;    // add to stats
-#else
 void(entity killer, entity killee) logfrag = {};    // add to stats
-#endif
 
-#ifdef __QW__ // NQ does not support infokeys or stof
-string(entity e, string key) infokey  = #80; // get a key value (world = serverinfo)
-float(string s) stof              = #81;     // convert string to float
-#endif
-
-#ifdef __QW__ // NQ does not support multicast
-void(vector where, float set) multicast = #82; // sends the temp message to a set
-                                    // of clients, possibly in PVS or PHS 
-#endif
 
 //============================================================================
 

@@ -79,7 +79,7 @@ void() multi_trigger =
 	else
 	{	// we can't just remove (self) here, because this is a touch function
 		// called wheil C code is looping through area links...
-		self.touch = __NULL__;
+		self.touch = SUB_Null;
 		self.nextthink = time + 0.1;
 		self.think = SUB_Remove;
 	}
@@ -340,20 +340,11 @@ void(vector org) spawn_tfog =
 	s.nextthink = time + 0.2;
 	s.think = play_teleport;
 
-#ifdef __QW__ // Differences in engine protocols
-	WriteByte (MSG_MULTICAST, SVC_TEMPENTITY);
-	WriteByte (MSG_MULTICAST, TE_TELEPORT);
-	WriteCoord (MSG_MULTICAST, org_x);
-	WriteCoord (MSG_MULTICAST, org_y);
-	WriteCoord (MSG_MULTICAST, org_z);
-	multicast (org, MULTICAST_PHS);
-#else
 	WriteByte (MSG_BROADCAST, SVC_TEMPENTITY);
 	WriteByte (MSG_BROADCAST, TE_TELEPORT);
 	WriteCoord (MSG_BROADCAST, org_x);
 	WriteCoord (MSG_BROADCAST, org_y);
 	WriteCoord (MSG_BROADCAST, org_z);
-#endif
 };
 
 

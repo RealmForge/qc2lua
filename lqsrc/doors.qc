@@ -282,10 +282,10 @@ void() door_touch =
 	}
 
 	other.items = other.items - self.items;
-	self.touch = __NULL__;
+	self.touch = SUB_Null;
 
 	if (self.enemy)
-		self.enemy.touch = __NULL__;	// get paired door
+		self.enemy.touch = SUB_Null;	// get paired door
 
 	door_use ();
 };
@@ -626,7 +626,7 @@ void () fd_secret_use =
 	
 	if (!(self.spawnflags & SECRET_NO_SHOOT))
 	{
-		self.th_pain = __NULL__;
+		self.th_pain = SUB_Null;
 		self.takedamage = DAMAGE_NO;
 	}
 

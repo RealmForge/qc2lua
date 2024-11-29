@@ -375,7 +375,7 @@ void()	Demon_JumpTouch =
 	{
 		if (self.flags & FL_ONGROUND)
 		{	// jump randomly to not get hung up
-			self.touch = __NULL__;
+			self.touch = SUB_Null;
 			self.think = demon1_jump1;
 			self.nextthink = time + 0.1;
 		}
@@ -383,7 +383,7 @@ void()	Demon_JumpTouch =
 		return;	// not on ground yet
 	}
 
-	self.touch = __NULL__;
+	self.touch = SUB_Null;
 	self.think = demon1_jump11;
 	self.nextthink = time + 0.1;
 };

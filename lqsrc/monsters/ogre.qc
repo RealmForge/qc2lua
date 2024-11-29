@@ -80,7 +80,7 @@ void() OgreGrenadeExplode =
 	WriteCoord (MSG_BROADCAST, self.origin_z);
 
 	self.velocity = '0 0 0';
-	self.touch = __NULL__;
+	self.touch = SUB_Null;
 	setmodel (self, "progs/s_explod.spr");
 	self.solid = SOLID_NOT;
 	s_explode1 ();

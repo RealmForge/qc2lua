@@ -95,17 +95,7 @@ SpawnBlood
 */
 void(vector org, vector vel, float damage) SpawnBlood =
 {
-#ifdef __QW__ // Differences in engine protocols
-	WriteByte (MSG_MULTICAST, SVC_TEMPENTITY);
-	WriteByte (MSG_MULTICAST, TE_BLOOD);
-	WriteByte (MSG_MULTICAST, 1);
-	WriteCoord (MSG_MULTICAST, org_x);
-	WriteCoord (MSG_MULTICAST, org_y);
-	WriteCoord (MSG_MULTICAST, org_z);
-	multicast (org, MULTICAST_PVS);
-#else
 	particle (org, vel*0.1, 73, damage*2);
-#endif
 };
 
 /*
@@ -115,21 +105,11 @@ SpawnPuff
 */
 void(vector org, float count) SpawnPuff =
 {
-#ifdef __QW__ // Differences in engine protocols
-	WriteByte (MSG_MULTICAST, SVC_TEMPENTITY);
-	WriteByte (MSG_MULTICAST, TE_GUNSHOT);
-	WriteByte (MSG_MULTICAST, count);
-	WriteCoord (MSG_MULTICAST, org_x);
-	WriteCoord (MSG_MULTICAST, org_y);
-	WriteCoord (MSG_MULTICAST, org_z);
-	multicast (org, MULTICAST_PVS);
-#else
 	WriteByte (MSG_BROADCAST, SVC_TEMPENTITY);
 	WriteByte (MSG_BROADCAST, TE_GUNSHOT);
 	WriteCoord (MSG_BROADCAST, org_x);
 	WriteCoord (MSG_BROADCAST, org_y);
 	WriteCoord (MSG_BROADCAST, org_z);
-#endif
 }
 
 /*
@@ -146,21 +126,11 @@ void(float damage) spawn_touchblood =
 };
 
 void() SmallKick = {
-#ifdef __QW__ // Differences in engine protocols
-	msg_entity = self;
-	WriteByte (MSG_ONE, SVC_SMALLKICK);
-#else
 	self.punchangle_x = -2;
-#endif
 };
 
 void() BigKick = {
-#ifdef __QW__ // Differences in engine protocols
-	msg_entity = self;
-	WriteByte (MSG_ONE, SVC_BIGKICK);
-#else
 	self.punchangle_x = -4;
-#endif
 };
 
 /*
@@ -379,7 +349,7 @@ void() BecomeExplosion =
 {
 	self.movetype = MOVETYPE_NONE;
 	self.velocity = '0 0 0';
-	self.touch = __NULL__;
+	self.touch = SUB_Null;
 	setmodel (self, "progs/s_explod.spr");
 	self.solid = SOLID_NOT;
 	s_explode1 ();
@@ -388,16 +358,6 @@ void() BecomeExplosion =
 
 void() MissileExplode =
 {
-#ifdef __QW__ // Differences in engine protocols
-	WriteByte (MSG_MULTICAST, SVC_TEMPENTITY);
-	WriteByte (MSG_MULTICAST, TE_EXPLOSION);
-	WriteCoord (MSG_MULTICAST, self.origin_x);
-	WriteCoord (MSG_MULTICAST, self.origin_y);
-	WriteCoord (MSG_MULTICAST, self.origin_z);
-	multicast (self.origin, MULTICAST_PHS);
-
-	remove(self);
-#else
 	WriteByte (MSG_BROADCAST, SVC_TEMPENTITY);
 	WriteByte (MSG_BROADCAST, TE_EXPLOSION);
 	WriteCoord (MSG_BROADCAST, self.origin_x);
@@ -405,7 +365,6 @@ void() MissileExplode =
 	WriteCoord (MSG_BROADCAST, self.origin_z);
 
 	BecomeExplosion ();
-#endif
 };
 
 void() T_MissileTouch =
@@ -495,16 +454,7 @@ LIGHTNING
 
 void(entity from, float damage) LightningHit =
 {
-#ifdef __QW__ // Differences in engine protocols
-	WriteByte (MSG_MULTICAST, SVC_TEMPENTITY);
-	WriteByte (MSG_MULTICAST, TE_LIGHTNINGBLOOD);
-	WriteCoord (MSG_MULTICAST, trace_endpos_x);
-	WriteCoord (MSG_MULTICAST, trace_endpos_y);
-	WriteCoord (MSG_MULTICAST, trace_endpos_z);
-	multicast (trace_endpos, MULTICAST_PVS);
-#else
 	particle (trace_endpos, '0 0 100', 15, damage*4);
-#endif
 
 	trace_ent.deathtype = "lightning";
 	T_Damage (trace_ent, from, from, damage);
@@ -520,7 +470,7 @@ void(vector p1, vector p2, entity from, float damage) LightningDamage =
 	local entity		e1, e2;
 	local vector		f;
 
-#ifdef LIGHTNINGFIX
+//#ifdef LIGHTNINGFIX
 	local float			tmp;
 	f = p2 - p1;
 	f = normalize (f);
@@ -530,13 +480,14 @@ void(vector p1, vector p2, entity from, float damage) LightningDamage =
 	f_z = 0;
 	f = f*16;
 #else
+/*
 	f = p2 - p1;
 	normalize (f);
 	f_x = 0 - f_y;
 	f_y = f_x;
 	f_z = 0;
 	f = f*16;
-#endif
+*/
 
 	e1 = e2 = world;
 
@@ -614,18 +565,6 @@ void() W_FireLightning =
 
 	traceline (org, org + v_forward*600, TRUE, self);
 
-#ifdef __QW__ // Differences in engine protocols
-	WriteByte (MSG_MULTICAST, SVC_TEMPENTITY);
-	WriteByte (MSG_MULTICAST, TE_LIGHTNING2);
-	WriteEntity (MSG_MULTICAST, self);
-	WriteCoord (MSG_MULTICAST, org_x);
-	WriteCoord (MSG_MULTICAST, org_y);
-	WriteCoord (MSG_MULTICAST, org_z);
-	WriteCoord (MSG_MULTICAST, trace_endpos_x);
-	WriteCoord (MSG_MULTICAST, trace_endpos_y);
-	WriteCoord (MSG_MULTICAST, trace_endpos_z);
-	multicast (org, MULTICAST_PHS);
-#else
 	WriteByte (MSG_BROADCAST, SVC_TEMPENTITY);
 	WriteByte (MSG_BROADCAST, TE_LIGHTNING2);
 	WriteEntity (MSG_BROADCAST, self);
@@ -635,7 +574,6 @@ void() W_FireLightning =
 	WriteCoord (MSG_BROADCAST, trace_endpos_x);
 	WriteCoord (MSG_BROADCAST, trace_endpos_y);
 	WriteCoord (MSG_BROADCAST, trace_endpos_z);
-#endif
 
 	LightningDamage (self.origin, trace_endpos + v_forward*4, self, 30);
 };
@@ -848,20 +786,11 @@ void() spike_touch =
 		else
 			te_type = TE_SPIKE;
 
-#ifdef __QW__ // Differences in engine protocols
-		WriteByte (MSG_MULTICAST, SVC_TEMPENTITY);
-		WriteByte (MSG_MULTICAST, te_type);
-		WriteCoord (MSG_MULTICAST, self.origin_x);
-		WriteCoord (MSG_MULTICAST, self.origin_y);
-		WriteCoord (MSG_MULTICAST, self.origin_z);
-		multicast (self.origin, MULTICAST_PHS);
-#else
 		WriteByte (MSG_BROADCAST, SVC_TEMPENTITY);
 		WriteByte (MSG_BROADCAST, te_type);
 		WriteCoord (MSG_BROADCAST, self.origin_x);
 		WriteCoord (MSG_BROADCAST, self.origin_y);
 		WriteCoord (MSG_BROADCAST, self.origin_z);
-#endif
 	}
 
 	remove(self);
@@ -896,20 +825,11 @@ void() superspike_touch =
 	}
 	else
 	{
-#ifdef __QW__ // Differences in engine protocols
-		WriteByte (MSG_MULTICAST, SVC_TEMPENTITY);
-		WriteByte (MSG_MULTICAST, TE_SUPERSPIKE);
-		WriteCoord (MSG_MULTICAST, self.origin_x);
-		WriteCoord (MSG_MULTICAST, self.origin_y);
-		WriteCoord (MSG_MULTICAST, self.origin_z);
-		multicast (self.origin, MULTICAST_PHS);
-#else
 		WriteByte (MSG_BROADCAST, SVC_TEMPENTITY);
 		WriteByte (MSG_BROADCAST, TE_SUPERSPIKE);
 		WriteCoord (MSG_BROADCAST, self.origin_x);
 		WriteCoord (MSG_BROADCAST, self.origin_y);
 		WriteCoord (MSG_BROADCAST, self.origin_z);
-#endif
 	}
 
 	remove(self);
@@ -1440,16 +1360,10 @@ void() QuadCheat =
 #define ID_IMPULSE_CYCLEREVERSE	12
 #define ID_IMPULSE_QUADCHEAT	255
 
-#ifdef __LIBREQUAKE__
-#ifndef __QW__ // Cutscene camera is not used in QW
-
 #define LQ_IMPULSE_SPAWNCAM		200
 #define LQ_IMPULSE_CAMTIMEINC	201
 #define LQ_IMPULSE_CAMTIMEDEC	202
 #define LQ_IMPULSE_PLAYCAMERAS	203
-
-#endif // __QW__
-#endif // __LIBREQUAKE__
 
 void() ImpulseCommands =
 {
@@ -1466,16 +1380,10 @@ void() ImpulseCommands =
 		case ID_IMPULSE_CYCLEREVERSE: CycleWeaponReverseCommand(); break;
 		case ID_IMPULSE_QUADCHEAT: QuadCheat(); break;
 
-#ifdef __LIBREQUAKE__
-#ifndef __QW__ // Cutscene camera is not used in QW
-
 		case LQ_IMPULSE_SPAWNCAM: LQ_SpawnCamera(); break;
 		case LQ_IMPULSE_CAMTIMEDEC: LQ_AppendCameraTime(5); break;
 		case LQ_IMPULSE_CAMTIMEDEC: LQ_AppendCameraTime(-5); break;
 		case LQ_IMPULSE_PLAYCAMERAS: LQ_PlayCameras(); break;
-
-#endif // __QW__
-#endif // __LIBREQUAKE__
 
 		default: break;
 	}

@@ -271,6 +271,16 @@ local function ParseStatement()
         return t
     end
 
+    -- break
+    if check('break') then
+        local t = {
+            type = 'break',
+            value = ParseExpr()
+        }
+        expect(';')
+        return t
+    end
+
     -- eat nops
     if check(';') then
         io.stderr:write('Warning: eating no-op and returning nil\n')

@@ -109,7 +109,7 @@ void(entity targ, entity attacker) Killed =
 	ClientObituary(self, attacker);
 
 	self.takedamage = DAMAGE_NO;
-	self.touch = __NULL__;
+	self.touch = SUB_Null;
 	self.effects = 0;
 
 	monster_death_use();
@@ -136,13 +136,8 @@ void(entity targ, entity inflictor, entity attacker, float damage) T_Damage=
 	local	float	on_team;
 	local	float	rj;
 
-#ifdef __QW__ // QW handles teams differently
-	local   string	attackerteam;
-	local	string	targteam;
-#else
 	local   float	attackerteam;
 	local	float	targteam;
-#endif
 
 	if (!targ.takedamage)
 		return;
@@ -217,15 +212,9 @@ void(entity targ, entity inflictor, entity attacker, float damage) T_Damage=
 	}
 
 	// team play damage avoidance
-#ifdef __QW__ // QW handles teams differently
-	attackerteam = infokey(attacker, "team");
-	targteam = infokey(targ, "team");
-	on_team = attackerteam != "";
-#else
 	attackerteam = attacker.team;
 	targteam = targ.team;
 	on_team = attackerteam != 0;
-#endif
 
 	if ((teamplay == 1) && (targteam == attackerteam) &&
 		(attacker.classname == "player") && on_team &&

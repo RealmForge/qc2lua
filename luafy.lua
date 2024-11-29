@@ -266,6 +266,10 @@ local function EmitReturn(root)
     end
 end
 
+local function EmitBreak(root)
+    emit('break')
+end
+
 local function EmitLocal(root)
     if root.ctype.name == 'vector' then
         for i,v in ipairs(root.value) do
@@ -369,6 +373,8 @@ handle = function(root, previous, next)
         emit(BarfExprComponent(root))
     elseif root.type == 'return' then
         EmitReturn(root)
+    elseif root.type == 'break' then
+        EmitBreak(root)
     elseif root.type == 'local' then
         EmitLocal(root)
     elseif root.type == 'const' then

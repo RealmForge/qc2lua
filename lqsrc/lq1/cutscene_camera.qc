@@ -17,8 +17,6 @@
     See file, 'COPYING', for details.
 */
 
-#ifdef __LIBREQUAKE__
-
 #define LQ_MAXCAMERAS   3
 
 float cameras_in_world;
@@ -199,5 +197,3 @@ void() LQ_PlayCameras =
         players = find(players, classname, "player");
     }
 };
-
-#endif // __LIBREQUAKE__
