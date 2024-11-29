@@ -73,7 +73,7 @@ Killed
 */
 void(entity targ, entity attacker) Killed =
 {
-	entity oself;
+	local entity oself;
 
 	oself = self;
 	self = targ;
@@ -119,10 +119,10 @@ This should be the only function that ever reduces health.
 */
 void(entity targ, entity inflictor, entity attacker, float damage) T_Damage=
 {
-	vector dir;
-	entity oldself;
-	float save;
-	float take;
+	local vector dir;
+	local entity oldself;
+	local float save;
+	local float take;
 
 	if (!targ.takedamage)
 		return;
@@ -228,9 +228,9 @@ T_RadiusDamage
 */
 void(entity inflictor, entity attacker, float damage, entity ignore) T_RadiusDamage =
 {
-	float points;
-	entity head;
-	vector org;
+	local float points;
+	local entity head;
+	local vector org;
 
 	head = findradius(inflictor.origin, damage+40);
 
@@ -270,8 +270,8 @@ T_BeamDamage
 */
 void(entity attacker, float damage) T_BeamDamage =
 {
-	float points;
-	entity head;
+	local float points;
+	local entity head;
 
 	head = findradius(attacker.origin, damage+40);
 

@@ -72,7 +72,7 @@ self.origin traveling at speed
 */
 void(entity ent, vector tdest, float tspeed, void() func) SUB_CalcMoveEnt =
 {
-	entity stemp;
+	local entity stemp;
 	stemp = self;
 	self = ent;
 
@@ -82,8 +82,8 @@ void(entity ent, vector tdest, float tspeed, void() func) SUB_CalcMoveEnt =
 
 void(vector tdest, float tspeed, void() func) SUB_CalcMove =
 {
-	vector vdestdelta;
-	float len, traveltime;
+	local vector vdestdelta;
+	local float len, traveltime;
 
 	if (!tspeed)
 		objerror("No speed is defined!");
@@ -149,7 +149,7 @@ The calling function should make sure self.think is valid
 */
 void(entity ent, vector destangle, float tspeed, void() func) SUB_CalcAngleMoveEnt =
 {
-	entity stemp;
+	local entity stemp;
 	stemp = self;
 	self = ent;
 	SUB_CalcAngleMove(destangle, tspeed, func);
@@ -158,8 +158,8 @@ void(entity ent, vector destangle, float tspeed, void() func) SUB_CalcAngleMoveE
 
 void(vector destangle, float tspeed, void() func) SUB_CalcAngleMove =
 {
-	vector destdelta;
-	float len, traveltime;
+	local vector destdelta;
+	local float len, traveltime;
 
 	if (!tspeed)
 		objerror("No speed is defined!");
@@ -229,7 +229,7 @@ match(string)self.target and call their .use function
 */
 void() SUB_UseTargets =
 {
-	entity t, stemp, otemp, act;
+	local entity t, stemp, otemp, act;
 
 //
 // check for a delay

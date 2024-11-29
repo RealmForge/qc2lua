@@ -53,7 +53,7 @@ plants the object on the floor
 */
 void() PlaceItem =
 {
-	float oldz;
+	local float oldz;
 
 	self.mdl = self.model; // so it can be restored on respawn
 	self.flags = FL_ITEM; // make extra wide
@@ -167,7 +167,7 @@ void() item_health =
 
 void() health_touch =
 {
-	string s;
+	local string s;
 
 	if (other.classname != "player")
 		return;
@@ -254,7 +254,7 @@ void() armor_touch;
 
 void() armor_touch =
 {
-	float type, value, bit;
+	local float type, value, bit;
 
 	if (other.health <= 0)
 		return;
@@ -390,7 +390,7 @@ Deathmatch weapon change rules for picking up a weapon
 */
 void(float old, float new) Deathmatch_Weapon =
 {
-	float or, nr;
+	local float or, nr;
 
 // change self.weapon if desired
 	or = RankForWeapon(self.weapon);
@@ -408,9 +408,9 @@ float() W_BestWeapon;
 
 void() weapon_touch =
 {
-	float hadammo, best, new, old;
-	entity stemp;
-	float leave;
+	local float hadammo, best, new, old;
+	local entity stemp;
+	local float leave;
 
 	if (!(other.flags & FL_CLIENT))
 		return;
@@ -613,8 +613,8 @@ AMMO
 
 void() ammo_touch =
 {
-	entity stemp;
-	float best;
+	local entity stemp;
+	local float best;
 
 	if (other.classname != "player")
 		return;
@@ -1237,9 +1237,9 @@ PLAYER BACKPACKS
 
 void() BackpackTouch =
 {
-	string s;
-	float best;
-		entity stemp;
+	local string s;
+	local float best;
+	local entity stemp;
 
 	if (other.classname != "player")
 		return;
@@ -1317,7 +1317,7 @@ DropBackpack
 */
 void() DropBackpack =
 {
-	entity item;
+	local entity item;
 
 	if (!(self.ammo_shells + self.ammo_nails + self.ammo_rockets + self.ammo_cells))
 		return; // nothing in it

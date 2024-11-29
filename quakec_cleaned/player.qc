@@ -276,7 +276,7 @@ void(float num_bubbles) DeathBubbles;
 
 void() PainSound =
 {
-	float rs;
+	local float rs;
 
 	if (self.health < 0)
 		return;
@@ -393,7 +393,7 @@ void() player_die_ax1;
 
 void() DeathBubblesSpawn =
 {
-	entity bubble;
+	local entity bubble;
 	if (self.owner.waterlevel != 3)
 		return;
 	bubble = spawn();
@@ -417,7 +417,7 @@ void() DeathBubblesSpawn =
 
 void(float num_bubbles) DeathBubbles =
 {
-	entity bubble_spawner;
+	local entity bubble_spawner;
 
 	bubble_spawner = spawn();
 	setorigin(bubble_spawner, self.origin);
@@ -434,7 +434,7 @@ void(float num_bubbles) DeathBubbles =
 
 void() DeathSound =
 {
-	float rs;
+	local float rs;
 
 	// water death sounds
 	if (self.waterlevel == 3)
@@ -470,7 +470,7 @@ void() PlayerDead =
 
 vector(float dm) VelocityForDamage =
 {
-	vector v;
+	local vector v;
 
 	v_x = 100 * crandom();
 	v_y = 100 * crandom();
@@ -494,7 +494,7 @@ vector(float dm) VelocityForDamage =
 
 void(string gibname, float dm) ThrowGib =
 {
-	entity new;
+	local entity new;
 
 	new = spawn();
 	new.origin = self.origin;
@@ -559,7 +559,7 @@ void() GibPlayer =
 
 void() PlayerDie =
 {
-	float i;
+	local float i;
 
 	self.items = self.items - (self.items & IT_INVISIBILITY);
 	self.invisible_finished = 0; // don't die as eyes

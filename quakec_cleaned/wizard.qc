@@ -64,8 +64,8 @@ if self.enemy maintains it's current velocity
 */
 void(entity missile, float mspeed, float accuracy) LaunchMissile =
 {
-	vector vec, move;
-	float fly;
+	local vector vec, move;
+	local float fly;
 
 	makevectors(self.angles);
 
@@ -106,9 +106,9 @@ WizardCheckAttack
 */
 float() WizardCheckAttack =
 {
-	vector spot1, spot2;
-	entity targ;
-	float chance;
+	local vector spot1, spot2;
+	local entity targ;
+	local float chance;
 
 	if (time < self.attack_finished)
 		return FALSE;
@@ -207,8 +207,8 @@ FAST ATTACKS
 
 void() Wiz_FastFire =
 {
-	vector vec;
-	vector dst;
+	local vector vec;
+	local vector dst;
 
 	if (self.owner.health > 0)
 	{
@@ -233,7 +233,7 @@ void() Wiz_FastFire =
 
 void() Wiz_StartFast =
 {
-	entity missile;
+	local entity missile;
 
 	sound(self, CHAN_WEAPON, "wizard/wattack.wav", 1, ATTN_NORM);
 	self.v_angle = self.angles;
@@ -264,7 +264,7 @@ void() Wiz_StartFast =
 
 void() Wiz_idlesound =
 {
-	float wr;
+	local float wr;
 	wr = random() * 5;
 
 	if (self.waitmin < time)

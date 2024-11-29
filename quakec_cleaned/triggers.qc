@@ -297,8 +297,8 @@ float SILENT = 2;
 
 void() play_teleport =
 {
-	float v;
-	string tmpstr;
+	local float v;
+	local string tmpstr;
 
 	v = random() * 5;
 	if (v < 1)
@@ -358,7 +358,7 @@ void() tdeath_touch =
 
 void(vector org, entity death_owner) spawn_tdeath =
 {
-	entity death;
+	local entity death;
 
 	death = spawn();
 	death.classname = "teledeath";
@@ -377,8 +377,8 @@ void(vector org, entity death_owner) spawn_tdeath =
 
 void() teleport_touch =
 {
-	entity t;
-	vector org;
+	local entity t;
+	local vector org;
 
 	if (self.targetname)
 	{
@@ -463,7 +463,7 @@ If the trigger_teleport has a targetname, it will only teleport entities when it
 */
 void() trigger_teleport =
 {
-	vector o;
+	local vector o;
 
 	InitTrigger();
 	self.touch = teleport_touch;

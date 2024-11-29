@@ -54,8 +54,8 @@ W_FireAxe
 */
 void() W_FireAxe =
 {
-	vector source;
-	vector org;
+	local vector source;
+	local vector org;
 
 	source = self.origin + '0 0 16';
 	traceline(source, source + v_forward*64, FALSE, self);
@@ -87,7 +87,7 @@ void() W_FireAxe =
 
 vector() wall_velocity =
 {
-	vector vel;
+	local vector vel;
 
 	vel = normalize(self.velocity);
 	vel = normalize(vel + v_up*(random()- 0.5) + v_right*(random()- 0.5));
@@ -105,7 +105,7 @@ SpawnMeatSpray
 */
 void(vector org, vector vel) SpawnMeatSpray =
 {
-	entity missile;
+	local entity missile;
 
 	missile = spawn();
 	missile.owner = self;
@@ -145,7 +145,7 @@ spawn_touchblood
 */
 void(float damage) spawn_touchblood =
 {
-	vector vel;
+	local vector vel;
 
 	vel = wall_velocity() * 0.2;
 	SpawnBlood(self.origin + vel*0.01, vel, damage);
@@ -218,7 +218,7 @@ TraceAttack
 */
 void(float damage, vector dir) TraceAttack =
 {
-	vector vel, org;
+	local vector vel, org;
 
 	vel = normalize(dir + v_up*crandom() + v_right*crandom());
 	vel = vel + 2*trace_plane_normal;
@@ -251,8 +251,8 @@ Go to the trouble of combining multiple pellets into a single damage call.
 */
 void(float shotcount, vector dir, vector spread) FireBullets =
 {
-	vector direction;
-	vector src;
+	local vector direction;
+	local vector src;
 
 	makevectors(self.v_angle);
 
@@ -280,7 +280,7 @@ W_FireShotgun
 */
 void() W_FireShotgun =
 {
-	vector dir;
+	local vector dir;
 
 	sound(self, CHAN_WEAPON, "weapons/guncock.wav", 1, ATTN_NORM);
 
@@ -299,7 +299,7 @@ W_FireSuperShotgun
 */
 void() W_FireSuperShotgun =
 {
-	vector dir;
+	local vector dir;
 
 	if (self.currentammo == 1)
 	{
@@ -344,7 +344,7 @@ void() BecomeExplosion =
 
 void() T_MissileTouch =
 {
-	float damg;
+	local float damg;
 
 	if (other == self.owner)
 		return; // don't explode on owner
@@ -389,7 +389,7 @@ W_FireRocket
 */
 void() W_FireRocket =
 {
-	entity missile;
+	local entity missile;
 
 	self.currentammo = self.ammo_rockets = self.ammo_rockets - 1;
 
@@ -435,8 +435,8 @@ LightningDamage
 */
 void(vector p1, vector p2, entity from, float damage) LightningDamage =
 {
-	entity e1, e2;
-	vector f;
+	local entity e1, e2;
+	local vector f;
 
 	f = p2 - p1;
 	normalize(f);
@@ -479,7 +479,7 @@ void(vector p1, vector p2, entity from, float damage) LightningDamage =
 
 void() W_FireLightning =
 {
-	vector org;
+	local vector org;
 
 	if (self.ammo_cells < 1)
 	{
@@ -561,7 +561,7 @@ W_FireGrenade
 */
 void() W_FireGrenade =
 {
-	entity missile;
+	local entity missile;
 
 	self.currentammo = self.ammo_rockets = self.ammo_rockets - 1;
 
@@ -639,7 +639,7 @@ void(vector org, vector dir) launch_spike =
 
 void() W_FireSuperSpikes =
 {
-	vector dir;
+	local vector dir;
 
 	sound(self, CHAN_WEAPON, "weapons/spike2.wav", 1, ATTN_NORM);
 	self.attack_finished = time + 0.2;
@@ -654,7 +654,7 @@ void() W_FireSuperSpikes =
 
 void(float ox) W_FireSpikes =
 {
-	vector dir;
+	local vector dir;
 
 	makevectors(self.v_angle);
 
@@ -835,7 +835,7 @@ void() W_SetCurrentAmmo =
 
 float() W_BestWeapon =
 {
-	float it;
+	local float it;
 
 	it = self.items;
 
@@ -895,7 +895,7 @@ void() player_rocket1;
 
 void() W_Attack =
 {
-	float r;
+	local float r;
 
 	if (!W_CheckNoAmmo())
 		return;
@@ -965,7 +965,7 @@ W_ChangeWeapon
 */
 void() W_ChangeWeapon =
 {
-	float it, am, fl;
+	local float it, am, fl;
 
 	it = self.items;
 	am = 0;
@@ -1078,7 +1078,7 @@ Go to the next weapon with ammo
 */
 void() CycleWeaponCommand =
 {
-	float it, am;
+	local float it, am;
 
 	it = self.items;
 	self.impulse = 0;
@@ -1144,7 +1144,7 @@ void() CycleWeaponCommand =
 
 void() CycleWeaponBack =
 {
-	float it, am;
+	local float it, am;
 
 	it = self.items;
 	self.impulse = 0;

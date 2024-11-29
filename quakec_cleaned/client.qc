@@ -113,8 +113,8 @@ Returns the entity to view from
 */
 entity() FindIntermission =
 {
-	entity spot;
-	float cyc;
+	local entity spot;
+	local float cyc;
 
 // look for info_intermission first
 	spot = find(world, classname, "info_intermission");
@@ -264,7 +264,7 @@ void() IntermissionThink =
 
 void() execute_changelevel =
 {
-	entity pos;
+	local entity pos;
 
 	intermission_running = 1;
 
@@ -412,7 +412,7 @@ Returns the entity to spawn at
 */
 entity() SelectSpawnPoint =
 {
-	entity spot;
+	local entity spot;
 
 // testinfo_player_start is only found in regioned levels
 	spot = find(world, classname, "testplayerstart");
@@ -464,7 +464,7 @@ void() PlayerDie;
 
 void() PutClientInServer =
 {
-	entity spot;
+	local entity spot;
 
 	self.classname = "player";
 	self.health = 100;
@@ -583,7 +583,7 @@ go to the next level for deathmatch
 */
 void() NextLevel =
 {
-	entity o;
+	local entity o;
 
 // find a trigger changelevel
 	o = find(world, classname, "trigger_changelevel");
@@ -611,8 +611,8 @@ Exit deathmatch games upon conditions
 */
 void() CheckRules =
 {
-	float timelimit;
-	float fraglimit;
+	local float timelimit;
+	local float fraglimit;
 
 	if (gameover) // someone else quit the game already
 		return;
@@ -637,7 +637,7 @@ void() CheckRules =
 
 void() PlayerDeathThink =
 {
-	float forward;
+	local float forward;
 
 	if ((self.flags & FL_ONGROUND))
 	{
@@ -804,7 +804,7 @@ void() WaterMove =
 
 void() CheckWaterJump =
 {
-	vector start, end;
+	local vector start, end;
 
 // check for a jump-out-of-water
 	makevectors(self.angles);
@@ -1127,8 +1127,8 @@ called when a player dies
 */
 void(entity targ, entity attacker) ClientObituary =
 {
-	float rnum;
-	string deathstring, deathstring2;
+	local float rnum;
+	local string deathstring, deathstring2;
 	rnum = random();
 
 	if (targ.classname == "player")

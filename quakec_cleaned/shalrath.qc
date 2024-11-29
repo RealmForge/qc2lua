@@ -147,10 +147,10 @@ ShalMissile
 void() ShalMissileTouch;
 void() ShalHome;
 void() ShalMissile =
-{
-	entity missile;
-	vector dir;
-	float dist, flytime;
+{	
+	local entity missile;
+	local vector dir;
+	local float dist, flytime;
 
 	dir = normalize((self.enemy.origin + '0 0 10') - self.origin);
 	dist = vlen(self.enemy.origin - self.origin);
@@ -181,7 +181,7 @@ void() ShalMissile =
 
 void() ShalHome =
 {
-	vector dir, vtemp;
+	local vector dir, vtemp;
 	vtemp = self.enemy.origin + '0 0 10';
 	if (self.enemy.health < 1)
 	{

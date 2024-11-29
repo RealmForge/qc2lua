@@ -206,9 +206,9 @@ void() boss_death10 = [ $death9, boss_death10 ]
 
 void(vector p) boss_missile =
 {
-	vector offang;
-	vector org, vec, d;
-	float t;
+	local vector offang;
+	local vector org, vec, d;
+	local float t;
 
 	offang = vectoangles(self.enemy.origin - self.origin);
 	makevectors(offang);
@@ -303,7 +303,7 @@ float lightning_end;
 
 void() lightning_fire =
 {
-	vector p1, p2;
+	local vector p1, p2;
 
 	if (time >= lightning_end)
 	{ // done here, put the terminals back up

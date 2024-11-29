@@ -107,7 +107,7 @@ OgreFireGrenade
 */
 void() OgreFireGrenade =
 {
-	entity missile;
+	local entity missile;
 
 	self.effects = self.effects | EF_MUZZLEFLASH;
 
@@ -153,8 +153,8 @@ FIXME
 */
 void(float side) chainsaw =
 {
-	vector delta;
-	float ldmg;
+	local vector delta;
+	local float ldmg;
 
 	if (!self.enemy)
 		return;
@@ -375,7 +375,7 @@ void() ogre_paine15 = [ $paine15, ogre_run1 ] {};
 
 void(entity attacker, float damage) ogre_pain =
 {
-	float r;
+	local float r;
 
 // don't make multiple pain sounds right after each other
 	if (self.pain_finished > time)

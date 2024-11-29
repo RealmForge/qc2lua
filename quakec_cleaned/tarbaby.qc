@@ -108,7 +108,7 @@ void() tbaby_jump1;
 
 void() Tar_JumpTouch =
 {
-	float ldmg;
+	local float ldmg;
 
 	if (other.takedamage && other.classname != self.classname)
 	{

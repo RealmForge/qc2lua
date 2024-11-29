@@ -10,7 +10,7 @@
         },
         "cwd": "${workspaceFolder}",
         "args": [
-            "C:/Dev/qc2lua/lqsrc/lq1/cutscene_camera.qc"
+            "C:/Dev/qc2lua/quakec_cleaned/zombie.qc"
           ]
       }
     ]

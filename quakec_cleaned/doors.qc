@@ -121,8 +121,8 @@ ACTIVATION FUNCTIONS
 
 void() door_fire =
 {
-	entity oself;
-	entity starte;
+	local entity oself;
+	local entity starte;
 
 	if (self.owner != self)
 		objerror("door_fire: self.owner != self");
@@ -162,7 +162,7 @@ void() door_fire =
 
 void() door_use =
 {
-	entity oself;
+	local entity oself;
 
 	self.message = ""; // door message are for touch only
 	self.owner.message = "";
@@ -192,7 +192,7 @@ void() door_trigger_touch =
 
 void() door_killed =
 {
-	entity oself;
+	local entity oself;
 
 	oself = self;
 	self = self.owner;
@@ -289,8 +289,8 @@ SPAWNING FUNCTIONS
 
 entity(vector fmins, vector fmaxs) spawn_field =
 {
-	entity trigger;
-	vector t1, t2;
+	local entity trigger;
+	local vector t1, t2;
 
 	trigger = spawn();
 	trigger.movetype = MOVETYPE_NONE;
@@ -332,8 +332,8 @@ LinkDoors
 */
 void() LinkDoors =
 {
-	entity t, starte;
-	vector cmins, cmaxs;
+	local entity t, starte;
+	local vector cmins, cmaxs;
 
 	if (self.enemy)
 		return; // already linked by another door
@@ -581,7 +581,7 @@ float SECRET_YES_SHOOT = 16; // shootable even if targeted
 
 void() fd_secret_use =
 {
-	float temp;
+	local float temp;
 
 	self.health = 10000;
 

@@ -199,7 +199,7 @@ void() misc_fireball =
 
 void() fire_fly =
 {
-	entity fireball;
+	local entity fireball;
 
 	fireball = spawn();
 	fireball.solid = SOLID_TRIGGER;
@@ -251,7 +251,7 @@ TESTING THING
 
 void() misc_explobox =
 {
-	float oldz;
+	local float oldz;
 
 	self.solid = SOLID_BBOX;
 	self.movetype = MOVETYPE_NONE;
@@ -283,7 +283,7 @@ Smaller exploding box, REGISTERED ONLY
 
 void() misc_explobox2 =
 {
-	float oldz;
+	local float oldz;
 
 	self.solid = SOLID_BBOX;
 	self.movetype = MOVETYPE_NONE;
@@ -408,7 +408,7 @@ void() air_bubbles =
 
 void() make_bubbles =
 {
-	entity bubble;
+	local entity bubble;
 
 	bubble = spawn();
 	setmodel(bubble, "progs/s_bubble.spr");
@@ -429,7 +429,7 @@ void() make_bubbles =
 
 void() bubble_split =
 {
-	entity bubble;
+	local entity bubble;
 	bubble = spawn();
 	setmodel(bubble, "progs/s_bubble.spr");
 	setorigin(bubble, self.origin);
@@ -461,7 +461,7 @@ void() bubble_remove =
 
 void() bubble_bob =
 {
-	float rnd1, rnd2, rnd3;
+	local float rnd1, rnd2, rnd3;
 
 	self.cnt = self.cnt + 1;
 	if (self.cnt == 4)

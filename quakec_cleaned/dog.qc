@@ -60,8 +60,8 @@ dog_bite
 */
 void() dog_bite =
 {
-	vector delta;
-	float ldmg;
+	local vector delta;
+	local float ldmg;
 
 	if (!self.enemy)
 		return;
@@ -82,7 +82,7 @@ void() dog_bite =
 
 void() Dog_JumpTouch =
 {
-	float ldmg;
+	local float ldmg;
 
 	if (self.health <= 0)
 		return;
@@ -300,8 +300,8 @@ CheckDogJump
 */
 float() CheckDogJump =
 {
-	vector dist;
-	float d;
+	local vector dist;
+	local float d;
 
 	if (self.origin_z + self.mins_z > self.enemy.origin_z + self.enemy.mins_z
 	+ 0.75 * self.enemy.size_z)

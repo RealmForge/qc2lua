@@ -38,7 +38,7 @@ void() test_teleport =
 
 void() test_teleport_touch =
 {
-	entity oldself;
+	local entity oldself;
 	other.movetype = MOVETYPE_TOSS;
 //	other.solid = SOLID_NOT;
 	other.dest = '256 -128 -128';
@@ -72,7 +72,7 @@ void() test_fodder =
 
 void() test_spawn =
 {
-	entity body;
+	local entity body;
 	makevectors(self.angles);
 
 	body = spawn();

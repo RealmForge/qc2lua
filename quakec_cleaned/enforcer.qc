@@ -58,7 +58,7 @@ $frame paind17 paind18 paind19
 
 void() Laser_Touch =
 {
-	vector org;
+	local vector org;
 
 	if (other == self.owner)
 		return; // don't explode on owner
@@ -119,7 +119,7 @@ void(vector org, vector vec) LaunchLaser =
 
 void() enforcer_fire =
 {
-	vector org;
+	local vector org;
 
 	self.effects = self.effects | EF_MUZZLEFLASH;
 	makevectors(self.angles);
@@ -236,7 +236,7 @@ void() enf_paind19 = [ $paind19, enf_run1 ] {};
 
 void(entity attacker, float damage) enf_pain =
 {
-	float r;
+	local float r;
 
 	r = random();
 	if (self.pain_finished > time)

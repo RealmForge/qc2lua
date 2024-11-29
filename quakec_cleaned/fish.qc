@@ -93,8 +93,8 @@ void() f_run9  = [ $swim17, f_run1 ] { ai_run(12); };
 
 void() fish_melee =
 {
-	vector delta;
-	float ldmg;
+	local vector delta;
+	local float ldmg;
 
 	if (!self.enemy)
 		return; // removed before stroke

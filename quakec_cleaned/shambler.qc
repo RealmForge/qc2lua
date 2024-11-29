@@ -117,8 +117,8 @@ void() sham_smash8 = [ $smash8, sham_smash9 ] { ai_charge(0); };
 void() sham_smash9 = [ $smash9, sham_smash10 ] { ai_charge(0); };
 void() sham_smash10 = [ $smash10, sham_smash11 ]
 {
-	vector delta;
-	float ldmg;
+	local vector delta;
+	local float ldmg;
 
 	if (!self.enemy)
 		return;
@@ -145,8 +145,8 @@ void() sham_swingr1;
 
 void(float side) ShamClaw =
 {
-	vector delta;
-	float ldmg;
+	local vector delta;
+	local float ldmg;
 
 	if (!self.enemy)
 		return;
@@ -209,7 +209,7 @@ void() sham_swingr9 = [ $swingr9, sham_run1  ]
 
 void() sham_melee =
 {
-	float chance;
+	local float chance;
 
 	chance = random();
 	if (chance > 0.6 || self.health == 600)
@@ -225,7 +225,7 @@ void() sham_melee =
 
 void() CastLightning =
 {
-	vector org, dir;
+	local vector org, dir;
 
 	self.effects = self.effects | EF_MUZZLEFLASH;
 
@@ -259,9 +259,10 @@ void() sham_magic1 = [ $magic1, sham_magic2 ]
 void() sham_magic2 = [ $magic2, sham_magic3 ] { ai_face(); };
 void() sham_magic3 = [ $magic3, sham_magic4 ]
 {
+	local entity o;
+	
 	ai_face();
-	self.nextthink = self.nextthink + 0.2;
-	entity o;
+	self.nextthink = self.nextthink + 0.2;	
 
 	self.effects = self.effects | EF_MUZZLEFLASH;
 	ai_face();
