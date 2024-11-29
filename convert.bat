@@ -1,10 +1,11 @@
 @echo off
-for /R %%f in (*.qc) do (
+for /R %%f in (quakec_cleaned\*.qc) do (
     setlocal disableDelayedExpansion    
     set "src=%%f"
     echo Converting: %%f
     setlocal enableDelayedExpansion
-    set "out=!src:lqsrc=out!"
+    REM set "out=!src:lqsrc=out!"
+    set "out=!out:quakec_cleaned=out_quakec_cleaned!"
     set "out=!out:.qc=.lua!"
     lua53 run.lua !src! > !out!
     endlocal
